@@ -281,7 +281,7 @@ class MaterialDatatable extends React.Component {
                     }
                     else if (typeof columnOptions.customValue === "function") {
                         value = columnOptions.customValue(rowData);
-                    } 
+                    }
                     if(value === null || value === undefined || React.isValidElement(value)){
                         value = "";
                     }
@@ -407,7 +407,7 @@ class MaterialDatatable extends React.Component {
             let changedData = cloneDeep(prevState.data);
             let filterData = cloneDeep(prevState.filterData);
             let filterValue = prevState["data"][row][index];
-            
+
             const tableMeta = this.getTableMeta(row, index, row, prevState.columns[index], prevState.data, prevState);
             let customBodyRenderResult = prevState.columns[index].customBodyRender(value, tableMeta);
 
@@ -420,7 +420,7 @@ class MaterialDatatable extends React.Component {
             if(filterValue === null || filterValue === undefined){
                 filterValue = "";
             }
-       
+
             const prevFilterIndex = filterData[index].indexOf(filterValue);
             filterData[index].splice(prevFilterIndex, 1, filterValue);
 
@@ -553,8 +553,11 @@ class MaterialDatatable extends React.Component {
     };
 
     changeRowsPerPage = rows => {
+        const rowCount = this.options.count || this.state.displayData.length;
+        const lastPage = Math.max(0, Math.ceil(rowCount / rows) - 1);
         this.setState(
             () => ({
+                page : Math.min(this.state.page,lastPage),
                 rowsPerPage: rows,
             }),
             () => {
